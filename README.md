@@ -6,7 +6,11 @@ The project runs entirely in the browser with no backend or server dependency. A
 
 ## Live Demo
 
-Open `index.html` via a local server (required for ES module support). A simple PowerShell server is included -- just run `Start-Aura.bat` on Windows.
+🚀 **[Experience AURA Live Here](https://apuravmanhas.github.io/aura-workspace/)**
+
+*(Note: The live demo runs entirely in your browser using WebGL and local storage. No installation required.)*
+
+Alternatively, to run it locally, open `index.html` via a local server (required for ES module support). A simple PowerShell server is included -- just run `Start-Aura.bat` on Windows.
 
 ## Features
 
