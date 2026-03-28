@@ -1,0 +1,50 @@
+{
+  "name": "Aura Workspace",
+  "short_name": "Aura",
+  "description": "Local-First Culinary Workspace for macro and meal engineering",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#0c1016",
+  "theme_color": "#1dd3ff",
+  "categories": ["productivity", "health"],
+  "screenshots": [
+    {
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'><rect fill='%231dd3ff' width='192' height='192'/><text x='96' y='96' font-size='80' fill='white' text-anchor='middle' dominant-baseline='middle' font-family='sans-serif' font-weight='bold'>A</text></svg>",
+      "sizes": "192x192",
+      "type": "image/svg+xml",
+      "form_factor": "narrow"
+    }
+  ],
+  "icons": [
+    {
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'><defs><style>.aura-icon { fill: %231dd3ff; } .aura-text { fill: white; font-size: 100px; font-weight: bold; font-family: sans-serif; }</style></defs><rect class='aura-icon' width='192' height='192'/><text class='aura-text' x='96' y='110' text-anchor='middle'>A</text></svg>",
+      "sizes": "192x192",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'><defs><style>.aura-icon { fill: %231dd3ff; } .aura-text { fill: white; font-size: 100px; font-weight: bold; font-family: sans-serif; }</style></defs><rect class='aura-icon' width='192' height='192' rx='40'/><text class='aura-text' x='96' y='110' text-anchor='middle'>A</text></svg>",
+      "sizes": "192x192",
+      "type": "image/svg+xml",
+      "purpose": "maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Dashboard",
+      "short_name": "Dashboard",
+      "description": "View your meal planning dashboard",
+      "url": "/?shortcut=dashboard",
+      "icons": [{"src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 96 96'><rect fill='%231dd3ff' width='96' height='96'/><text x='48' y='54' font-size='48' fill='white' text-anchor='middle' font-weight='bold'>D</text></svg>", "sizes": "96x96"}]
+    },
+    {
+      "name": "Planner",
+      "short_name": "Planner",
+      "description": "Plan your weekly meals",
+      "url": "/?shortcut=planner",
+      "icons": [{"src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 96 96'><rect fill='%231dd3ff' width='96' height='96'/><text x='48' y='54' font-size='48' fill='white' text-anchor='middle' font-weight='bold'>P</text></svg>", "sizes": "96x96"}]
+    }
+  ]
+}

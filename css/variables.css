@@ -1,0 +1,67 @@
+:root {
+  /* Bruno Simon warm palette */
+  --color-bg: #1a1209;
+  --color-bg-elevated: #2a1f12;
+  --color-surface: #33261a;
+  --color-surface-soft: #3d2e1e;
+  --color-border: #5a4430;
+  --color-text: #f5e6d0;
+  --color-text-muted: #b89a76;
+  --color-accent: #e8943a;
+  --color-accent-strong: #d47a1f;
+  --color-success: #6aaa48;
+  --color-warning: #e8943a;
+  --color-danger: #cc4444;
+
+  /* Typography */
+  --font-ui: "Space Grotesk", "Segoe UI", sans-serif;
+  --font-data: "Chakra Petch", "Consolas", monospace;
+  --text-xs: clamp(0.7rem, 0.64rem + 0.3vw, 0.82rem);
+  --text-sm: clamp(0.82rem, 0.74rem + 0.35vw, 0.96rem);
+  --text-md: clamp(0.95rem, 0.82rem + 0.55vw, 1.2rem);
+  --text-lg: clamp(1.2rem, 1.02rem + 0.85vw, 1.65rem);
+  --text-xl: clamp(1.6rem, 1.3rem + 1.1vw, 2.25rem);
+
+  /* Spacing */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.25rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+  --space-10: 2.5rem;
+
+  /* Effects */
+  --radius-sm: 0.5rem;
+  --radius-md: 0.85rem;
+  --radius-lg: 1.2rem;
+  --border-width: 1px;
+  --shadow-soft: 0 8px 32px rgba(0, 0, 0, 0.4);
+  --shadow-focus: 0 0 0 3px rgba(232, 148, 58, 0.35);
+  --glass-bg: rgba(26, 18, 9, 0.65);
+  --glass-border: rgba(255, 255, 255, 0.08);
+  --glass-blur: blur(16px);
+
+  /* Layout */
+  --topbar-height: 4rem;
+  --sidebar-width: 17rem;
+  --aside-width: 20rem;
+}
+
+:root[data-theme="light"] {
+  --color-bg: #f5e6d0;
+  --color-bg-elevated: #fff5e8;
+  --color-surface: #f0dcc4;
+  --color-surface-soft: #e8d0b4;
+  --color-border: #c9a87a;
+  --color-text: #2a1f12;
+  --color-text-muted: #7a6040;
+  --color-accent: #d47a1f;
+  --color-accent-strong: #b86510;
+  --color-success: #4a8a30;
+  --color-warning: #d47a1f;
+  --color-danger: #bb3333;
+  --glass-bg: rgba(245, 230, 208, 0.7);
+  --glass-border: rgba(0, 0, 0, 0.06);
+}

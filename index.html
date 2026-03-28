@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Aura: Interactive 3D Culinary Workspace — drive around a stunning world to plan meals" />
+    <meta name="theme-color" content="#e8943a" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="Aura" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect width='64' height='64' fill='%231a1209'/><text x='32' y='42' font-size='36' fill='%23e8943a' text-anchor='middle' font-family='sans-serif'>A</text></svg>" />
+    <link rel="manifest" href="./manifest.json" />
+    <title>Aura Workspace</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="./css/variables.css" />
+    <link rel="stylesheet" href="./css/main.css?v=fixed-v3" />
+
+    <script async src="https://unpkg.com/es-module-shims@1.8.0/dist/es-module-shims.js"></script>
+    <script type="importmap">
+      {
+        "imports": {
+          "three": "https://esm.sh/three@0.160.0",
+          "three/addons/": "https://esm.sh/three@0.160.0/examples/jsm/",
+          "cannon-es": "https://esm.sh/cannon-es@0.20.0",
+          "gsap": "https://esm.sh/gsap@3.12.5"
+        }
+      }
+    </script>
+  </head>
+  <body>
+    <!-- Loading Screen -->
+    <div id="loading-screen">
+      <div class="loading-bg"></div>
+      <div class="loading-content">
+        <div class="loading-logo">AURA</div>
+        <p class="loading-subtitle">Preparing your 3D workspace...</p>
+        <div class="loading-road">
+          <div class="loading-car"></div>
+        </div>
+        <div class="loading-dots">
+          <span></span><span></span><span></span>
+        </div>
+        <p class="loading-credit">Project made by <strong>WuXin</strong></p>
+      </div>
+    </div>
+
+    <!-- 3D Canvas -->
+    <canvas id="webgl-canvas"></canvas>
+
+    <!-- Speed HUD -->
+    <div id="speed-hud">
+      <span class="label">SPEED</span>
+      <span id="speed-value">0</span>
+    </div>
+
+    <!-- Zone Toast -->
+    <div id="zone-toast"></div>
+
+    <div class="app-shell" role="application" aria-label="Aura Local-First Culinary Workspace">
+      <header class="topbar" aria-label="Global toolbar">
+        <div class="brand">
+          <h1 id="brand-title">Aura</h1>
+          <p id="brand-subtitle">Drive to explore · WASD or click to move · H toggles HUD</p>
+        </div>
+        <div class="topbar-actions">
+          <button id="hud-toggle" class="ghost-button" type="button" aria-label="Toggle HUD">Hide HUD</button>
+          <button id="theme-toggle" class="ghost-button" type="button" aria-label="Toggle theme">Theme</button>
+          <button id="reset-workspace" class="danger-button" type="button" aria-label="Reset all data">Reset</button>
+        </div>
+      </header>
+
+      <nav class="sidebar" aria-label="Primary navigation">
+        <ul class="nav-list">
+          <li><button type="button" data-route="/">Dashboard</button></li>
+          <li><button type="button" data-route="/recipe-editor">Recipe Editor</button></li>
+          <li><button type="button" data-route="/meal-planner">Weekly Planner</button></li>
+          <li><button type="button" data-route="/suggestions">Smart Assistant</button></li>
+          <li><button type="button" data-route="/analytics">Analytics</button></li>
+        </ul>
+
+        <section class="sidebar-block" aria-labelledby="saved-recipes-title">
+          <h2 id="saved-recipes-title">Saved Recipes</h2>
+          <div id="saved-recipes-list" class="scroll-list" aria-live="polite">
+            <p class="muted">No recipes yet.</p>
+          </div>
+        </section>
+
+        <section class="sidebar-block">
+          <button type="button" class="ghost-button" data-action="open-import" style="width:100%;text-align:left;">📥 Import Recipes</button>
+          <button type="button" class="ghost-button" data-action="view-shortcuts" style="width:100%;text-align:left;margin-top:var(--space-2);">⌨️ Keyboard Shortcuts</button>
+        </section>
+      </nav>
+
+      <main id="app-root" class="app-main" tabindex="-1" aria-live="polite">
+        <section class="view view-loading">
+          <h2>Loading Workspace</h2>
+          <p>Preparing your local state and active view...</p>
+        </section>
+      </main>
+
+      <aside class="utility-panel" aria-label="Macro summary and quick tools">
+        <section class="panel-block" aria-labelledby="macro-summary-title">
+          <h2 id="macro-summary-title">Macro Summary</h2>
+          <dl class="macro-grid">
+            <div><dt>Calories</dt><dd id="macro-calories">0</dd></div>
+            <div><dt>Protein</dt><dd id="macro-protein">0g</dd></div>
+            <div><dt>Carbs</dt><dd id="macro-carbs">0g</dd></div>
+            <div><dt>Fats</dt><dd id="macro-fats">0g</dd></div>
+          </dl>
+        </section>
+
+        <section class="panel-block" aria-labelledby="planner-summary-title">
+          <h2 id="planner-summary-title">Weekly Plan</h2>
+          <dl class="macro-grid">
+            <div><dt>Meals Planned</dt><dd id="planner-meals">0</dd></div>
+            <div><dt>Week Calories</dt><dd id="planner-calories">0</dd></div>
+            <div><dt>Week Protein</dt><dd id="planner-protein">0g</dd></div>
+          </dl>
+        </section>
+
+        <section class="panel-block" aria-labelledby="quick-add-title">
+          <h2 id="quick-add-title">Quick Add</h2>
+          <form id="quick-add-form">
+            <label for="quick-item">Ingredient</label>
+            <input id="quick-item" name="quick-item" type="text" placeholder="e.g. Chicken breast" />
+            <label for="quick-grams">Grams</label>
+            <input id="quick-grams" name="quick-grams" type="number" min="1" step="1" value="100" />
+            <button type="submit">Add to Draft</button>
+          </form>
+        </section>
+      </aside>
+    </div>
+
+    <!-- DIAGNOSTIC: Non-module script to catch ALL mouse events -->
+    <script>
+      // This runs IMMEDIATELY, before any modules load
+      document.addEventListener('mousedown', function(e) {
+        console.log('[DIAG-mousedown]', e.clientX, e.clientY, 'target:', e.target.tagName, e.target.id || e.target.className);
+      }, true); // capture phase!
+      document.addEventListener('click', function(e) {
+        console.log('[DIAG-click]', e.clientX, e.clientY, 'target:', e.target.tagName, e.target.id || e.target.className);
+        var el = document.elementFromPoint(e.clientX, e.clientY);
+        console.log('[DIAG-elementFromPoint]', el ? (el.tagName + '#' + el.id + '.' + (el.className || '').toString().slice(0,40)) : 'null');
+      }, true); // capture phase!
+      // Also check pointer-events computed style on app-shell every 3 seconds
+      setTimeout(function() {
+        var shell = document.querySelector('.app-shell');
+        if (shell) {
+          var cs = getComputedStyle(shell);
+          console.log('[DIAG-shell]', 'pointer-events:', cs.pointerEvents, 'opacity:', cs.opacity, 'position:', cs.position, 'z-index:', cs.zIndex);
+        }
+        var canvas = document.getElementById('webgl-canvas');
+        if (canvas) {
+          var cc = getComputedStyle(canvas);
+          console.log('[DIAG-canvas]', 'pointer-events:', cc.pointerEvents, 'z-index:', cc.zIndex, 'position:', cc.position);
+        }
+      }, 4000);
+    </script>
+    <script type="module" src="js/app.js?v=fixed-v5"></script>
+  </body>
+</html>

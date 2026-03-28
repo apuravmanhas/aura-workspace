@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aura - Minimal Test</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      background: #0a0a0f;
+      color: #e6e6ff;
+      font-family: 'Chakra Petch', sans-serif;
+      padding: 20px;
+    }
+    
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    
+    h1 {
+      color: #1dd3ff;
+      margin-bottom: 10px;
+    }
+    
+    .status {
+      background: #1a1a2e;
+      padding: 15px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      border: 1px solid #1dd3ff;
+    }
+    
+    .section {
+      background: #16213e;
+      padding: 20px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      border: 1px solid #333;
+    }
+    
+    button {
+      background: #1dd3ff;
+      color: #0a0a0f;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-weight: bold;
+      margin-right: 10px;
+      margin-bottom: 10px;
+    }
+    
+    button:hover {
+      background: #14b0d4;
+    }
+    
+    input, textarea {
+      background: #0a0a0f;
+      border: 1px solid #333;
+      color: #e6e6ff;
+      padding: 8px;
+      border-radius: 4px;
+      margin-bottom: 10px;
+      width: 100%;
+    }
+    
+    .recipe-list {
+      display: grid;
+      gap: 10px;
+    }
+    
+    .recipe-item {
+      background: #0a0a0f;
+      padding: 10px;
+      border-radius: 4px;
+      border-left: 3px solid #1dd3ff;
+      cursor: pointer;
+    }
+    
+    .recipe-item:hover {
+      background: #1a1a2e;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>✨ Aura Workspace (Minimal Mode)</h1>
+    
+    <div class="status">
+      <p>✅ Page loaded successfully</p>
+      <p>This is the minimal fallback version to verify the server and browser work.</p>
+    </div>
+    
+    <div class="section">
+      <h2>Create Recipe</h2>
+      <input type="text" id="recipeName" placeholder="Recipe name (e.g., Protein Bowl)" />
+      <input type="text" id="ingredients" placeholder="Ingredients (comma-separated)" />
+      <button onclick="addRecipe()">Add Recipe</button>
+    </div>
+    
+    <div class="section">
+      <h2>Saved Recipes</h2>
+      <div class="recipe-list" id="recipes">
+        <p style="color: #888;">No recipes yet. Create one above!</p>
+      </div>
+    </div>
+    
+    <div class="section">
+      <h2>Debug Info</h2>
+      <p>Server: <strong>http://localhost:8080</strong></p>
+      <p>Browser: <strong id="browser">Detecting...</strong></p>
+      <p>Service Worker: <strong id="sw">Checking...</strong></p>
+      <button onclick="testAPI()">Test API</button>
+      <button onclick="clearData()">Clear All Data</button>
+    </div>
+  </div>
+
+  <script>
+    const STORAGE_KEY = 'aura-minimal-recipes';
+    
+    function loadRecipes() {
+      try {
+        const data = localStorage.getItem(STORAGE_KEY);
+        return data ? JSON.parse(data) : [];
+      } catch {
+        return [];
+      }
+    }
+    
+    function saveRecipes(recipes) {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(recipes));
+    }
+    
+    function renderRecipes() {
+      const recipes = loadRecipes();
+      const container = document.getElementById('recipes');
+      
+      if (recipes.length === 0) {
+        container.innerHTML = '<p style="color: #888;">No recipes yet. Create one above!</p>';
+        return;
+      }
+      
+      container.innerHTML = recipes
+        .map((r, i) => `
+          <div class="recipe-item" onclick="removeRecipe(${i})">
+            <strong>${r.name}</strong>
+            <p style="color: #888; margin-top: 5px; font-size: 12px;">${r.ingredients}</p>
+            <small style="color: #f00; margin-top: 5px; display: block;">Click to delete</small>
+          </div>
+        `)
+        .join('');
+    }
+    
+    function addRecipe() {
+      const name = document.getElementById('recipeName').value.trim();
+      const ingredients = document.getElementById('ingredients').value.trim();
+      
+      if (!name || !ingredients) {
+        alert('Please fill in recipe name and ingredients');
+        return;
+      }
+      
+      const recipes = loadRecipes();
+      recipes.push({ name, ingredients, timestamp: Date.now() });
+      saveRecipes(recipes);
+      
+      document.getElementById('recipeName').value = '';
+      document.getElementById('ingredients').value = '';
+      renderRecipes();
+    }
+    
+    function removeRecipe(index) {
+      const recipes = loadRecipes();
+      recipes.splice(index, 1);
+      saveRecipes(recipes);
+      renderRecipes();
+    }
+    
+    function clearData() {
+      if (confirm('Delete ALL recipes?')) {
+        localStorage.removeItem(STORAGE_KEY);
+        renderRecipes();
+      }
+    }
+    
+    function testAPI() {
+      alert(`✅ All systems operational:\n\n- Page: Loaded\n- DOM: Ready\n- Storage: ${localStorage ? 'OK' : 'FAIL'}\n- Browser: ${navigator.userAgent.split(' ').pop()}`);
+    }
+    
+    // Init on page load
+    document.getElementById('browser').textContent = navigator.userAgent.match(/Chrome|Firefox|Safari|Edge/)?.[0] || 'Unknown';
+    
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.getRegistrations().then(regs => {
+        document.getElementById('sw').textContent = regs.length > 0 ? '✅ Registered' : '⚠️ Not registered';
+      });
+    }
+    
+    renderRecipes();
+  </script>
+</body>
+</html>
